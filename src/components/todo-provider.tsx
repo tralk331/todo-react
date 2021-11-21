@@ -7,6 +7,7 @@ export const TodoProvider = ({
 }: PropsWithChildren<{}>): JSX.Element => {
 	const [todoList, setTodoList] = useState<TodoItemModel[]>([]);
 	const [todoLoading, setTodoLoading] = useState(false);
+	const [error, setError] = useState("");
 
 	useEffect(() => {
 		fetchTodos();
@@ -26,6 +27,8 @@ export const TodoProvider = ({
 		todoList,
 		loading: todoLoading,
 		setLoading: setTodoLoading,
+		error,
+		setError,
 		editedTodoId,
 		setEditedTodoId,
 		getTodo: (itemId) => {

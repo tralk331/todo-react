@@ -5,6 +5,8 @@ export interface TodoContextModel {
 	todoList: TodoItemModel[];
 	loading: boolean;
 	setLoading: (value: boolean) => void;
+	error: string;
+	setError: (errorMessage: string) => void;
 	editedTodoId: string | null;
 	setEditedTodoId: (itemId: string | null) => void;
 	getTodo: (itemId: string) => TodoItemModel | null;
@@ -17,6 +19,10 @@ const defaultTodoContext: TodoContextModel = {
 	loading: false,
 	setLoading: () => {
 		throw new Error("Set Loading not implemented!");
+	},
+	error: "",
+	setError: () => {
+		throw new Error("Set error function not implemented");
 	},
 	setEditedTodoId: () => {
 		throw new Error("Set edited todo id function not implemented");
