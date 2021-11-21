@@ -1,0 +1,41 @@
+.drawer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	right: 0;
+	height: 100vh;
+	width: 40%;
+	max-width: 40rem;
+	overflow: hidden;
+	transform: translateX(100%);
+	transition: transform 0.2s;
+	background-color: #212121;
+	padding: 1rem;
+	box-shadow: -7px 7px 5px 0px rgba(0, 0, 0, 0.75);
+
+	@media screen and (max-width: "767px") {
+		max-width: 100%;
+		width: 100%;
+	}
+
+	.drawer-close-icon {
+		font-size: 1.5rem;
+		justify-self: flex-end;
+		align-self: flex-end;
+
+		&:hover {
+			color: rgb(184, 184, 184);
+			cursor: pointer;
+		}
+	}
+
+	.drawer-content {
+		width: 100%;
+	}
+}
+
+.drawer-open {
+	transform: translateX(0);
+}

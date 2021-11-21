@@ -1,0 +1,25 @@
+.app-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-width: 100vw;
+	min-height: 100vh;
+	background-color: #121212;
+	color: white;
+
+	.add-todo-button {
+		background-color: #a5d6a7;
+		border: 0;
+		align-self: flex-end;
+		margin-right: 2.5rem;
+		width: 10rem;
+		font-size: 1.5rem;
+		padding: 0.5rem;
+
+		&:hover {
+			cursor: pointer;
+			background-color: #d7ffd9;
+		}
+	}
+}
