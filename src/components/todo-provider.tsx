@@ -15,12 +15,22 @@ export const TodoProvider = ({
 
 	const fetchTodos = async () => {
 		setTodoLoading(true);
-		const todosResponse = await fetch(
-			"https://619a563d9022ea0017a7b116.mockapi.io/api/todos"
-		);
-		const todoValues = await todosResponse.json();
-		setTodoList(todoValues);
-		setTodoLoading(false);
+
+		try {
+			const todosResponse = await fetch(
+				"https://619a563d9022ea0017a7b116.mockapi.io/api/todos"
+			);
+
+			if (todosResponse.ok) {
+				const todoValues = await todosResponse.json();
+				setTodoList(todoValues);
+				setTodoLoading(false);
+				return;
+			}
+			throw new Error("Failed to fetch TODOs");
+		} catch (error) {
+			setError("Failed to fetch TODOs");
+		}
 	};
 	const [editedTodoId, setEditedTodoId] = useState<string | null>(null);
 	const todoContextValue: TodoContextModel = {
@@ -39,31 +49,45 @@ export const TodoProvider = ({
 			return null;
 		},
 		addTodo: async (item: TodoItemModel) => {
-			console.log(JSON.stringify(item));
 			try {
-				await fetch(`https://619a563d9022ea0017a7b116.mockapi.io/api/todos`, {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(item),
-				});
-				await fetchTodos();
+				const res = await fetch(
+					`https://619a563d9022ea0017a7b116.mockapi.io/api/todos`,
+					{
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(item),
+					}
+				);
+
+				if (res.ok) {
+					await fetchTodos();
+					return;
+				}
+
+				throw new Error("Failed to add TODO");
 			} catch (error) {
-				console.error("Failed to add todo");
+				setError("Failed to add todo!");
 			}
 		},
 		removeTodo: async (itemId: string) => {
 			try {
-				await fetch(
+				const res = await fetch(
 					`https://619a563d9022ea0017a7b116.mockapi.io/api/todos/${itemId}`,
 					{
 						method: "DELETE",
 					}
 				);
-				await fetchTodos();
+
+				if (res.ok) {
+					await fetchTodos();
+					return;
+				}
+
+				throw new Error("Failed to remove TODO");
 			} catch (error) {
-				console.error("Failed to remove todo");
+				setError("Failed to remove todo");
 			}
 		},
 		toggleTodoCompleted: async (itemId: string) => {
@@ -75,9 +99,8 @@ export const TodoProvider = ({
 				items[itemIndex].isComplete = !item.isComplete;
 				setTodoList(items);
 
-				console.log(JSON.stringify(items[itemIndex]));
 				try {
-					await fetch(
+					const res = await fetch(
 						`https://619a563d9022ea0017a7b116.mockapi.io/api/todos/${itemId}`,
 						{
 							method: "PUT",
@@ -87,8 +110,15 @@ export const TodoProvider = ({
 							body: JSON.stringify(items[itemIndex]),
 						}
 					);
+
+					if (res.ok) {
+						await fetchTodos();
+						return;
+					}
+
+					throw new Error("Error toggling the todo.");
 				} catch (error) {
-					console.error("Error changing state state");
+					setError("Error toggling the todo.");
 				}
 			}
 		},
